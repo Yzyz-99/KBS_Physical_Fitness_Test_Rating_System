@@ -259,11 +259,9 @@ else
 ?temp)
 
 (defrule get-data
+(not (new-data))
 =>
-(enterStudentData))
-
-(defrule get-data
-=>
+(assert (new-data))
 (enterStudentData))
 
 (defrule check-physical-fitness-test-result
@@ -275,6 +273,7 @@ else
 (defrule display-student-result
 ?data <- (student-data (name ?name) (gender ?gender) (weight ?weight) (height ?height))
 ?result <- (physical-fitness-test (name ?name) (result-vital-capacity ?result-vital-capacity) (result-sit-and-reach ?result-sit-and-reach) (result-standing-long-jump ?result-standing-long-jump) (result-pull-up ?result-pull-up) (result-sit-up ?result-sit-up) (result-1000-meter-run ?result-1000-meter-run) (result-800-meter-run ?result-800-meter-run) (result-50-meter-run ?result-50-meter-run))
+?fact <- (new-data)
 =>
 (printout t crlf "Result physical fitness test" crlf)
 (printout t "Name: " ?name crlf)
@@ -288,8 +287,10 @@ else
 then
 (printout t "Pull up: " ?result-pull-up crlf)
 (printout t "1000 meter run: " ?result-1000-meter-run crlf)
-(printout t "50 meter run: " ?result-50-meter-run crlf)
+(printout t "50 meter run: " ?result-50-meter-run crlf crlf)
 else
 (printout t "Sit up: " ?result-sit-up crlf)
 (printout t "800 meter run: " ?result-800-meter-run crlf)
-(printout t "50 meter run: " ?result-50-meter-run crlf crlf)))
+(printout t "50 meter run: " ?result-50-meter-run crlf crlf))
+(retract ?fact)
+(halt))
